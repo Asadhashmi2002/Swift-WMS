@@ -1,5 +1,5 @@
 import React from 'react';
-import { Check, ChevronLeft } from 'lucide-react';
+import { Check, ChevronLeft, MessageCircle } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useWizardStore } from '../../stores/wizardStore';
 import { cn } from '../../lib/utils';
@@ -39,11 +39,11 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({
       {/* Sidebar */}
       <div className="w-80 bg-white border-r border-[#D2D1D4] p-6">
         <div className="mb-8">
-          <div className="h-10 w-10 rounded-xl bg-[#003CFF] flex items-center justify-center mb-4">
-            <span className="text-white font-bold text-lg">S</span>
+          <div className="h-10 w-10 rounded-xl bg-[#25D366] flex items-center justify-center mb-4">
+            <MessageCircle className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-xl font-bold text-[#1E1E1E] mb-2">SwiftAMS</h1>
-          <p className="text-gray-600 text-sm">WhatsApp API Setup Wizard</p>
+          <h1 className="text-xl font-bold text-[#1E1E1E] mb-2">WMS</h1>
+          <p className="text-gray-600 text-sm">WhatsApp Management System</p>
         </div>
 
         <div className="space-y-4">
@@ -56,7 +56,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({
                 key={step.number}
                 className={cn(
                   'flex items-start space-x-3 p-3 rounded-lg transition-colors',
-                  isActive && 'bg-[#003CFF]/5 border border-[#003CFF]/20',
+                  isActive && 'bg-[#25D366]/5 border border-[#25D366]/20',
                   isCompleted && 'bg-green-50'
                 )}
               >
@@ -64,7 +64,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({
                   className={cn(
                     'flex items-center justify-center w-8 h-8 rounded-full text-sm font-medium',
                     isCompleted && 'bg-green-500 text-white',
-                    isActive && 'bg-[#003CFF] text-white',
+                    isActive && 'bg-[#25D366] text-white',
                     !isActive && !isCompleted && 'bg-[#D2D1D4] text-gray-600'
                   )}
                 >
@@ -74,7 +74,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({
                   <h3
                     className={cn(
                       'font-medium text-sm',
-                      isActive && 'text-[#003CFF]',
+                      isActive && 'text-[#25D366]',
                       isCompleted && 'text-green-700',
                       !isActive && !isCompleted && 'text-gray-600'
                     )}

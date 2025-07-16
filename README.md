@@ -1,4 +1,4 @@
-# SwiftAMS-WMS - WhatsApp Management System
+# WhatsApp Management System (WMS)
 
 A comprehensive WhatsApp Business API management system with integrated Payments & Auto-Billing functionality.
 
@@ -38,8 +38,8 @@ A comprehensive WhatsApp Business API management system with integrated Payments
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Asadhashmi2002/Swift-WMS.git
-   cd Swift-WMS
+   git clone https://github.com/yourusername/whatsapp-management-system.git
+   cd whatsapp-management-system
    ```
 
 2. **Install dependencies**
@@ -55,7 +55,7 @@ A comprehensive WhatsApp Business API management system with integrated Payments
    Update `.env` with your configuration:
    ```env
    # Database
-   DATABASE_URL="postgresql://username:password@localhost:5432/swiftams"
+   DATABASE_URL="postgresql://username:password@localhost:5432/wms"
    
    # Payment Gateway (stripe or razorpay)
    PAYMENT_GW="stripe"

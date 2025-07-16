@@ -1,7 +1,7 @@
 {
-  "name": "swiftams-wms",
+  "name": "whatsapp-management-system",
   "version": "1.0.0",
-  "description": "SwiftAMS WhatsApp Management System with Payments & Auto-Billing",
+  "description": "WhatsApp Management System (WMS) - Complete WhatsApp Business API management platform with payments and auto-billing",
   "main": "index.js",
   "scripts": {
     "dev": "vite",

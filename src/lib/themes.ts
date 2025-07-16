@@ -2,10 +2,10 @@ import { Theme } from '../types';
 
 export const themes: Record<string, Theme> = {
   classic: {
-    name: 'Swift Classic',
+    name: 'WhatsApp Classic',
     colors: {
-      primary: '#003CFF',
-      accent: '#FA0082',
+      primary: '#25D366',
+      accent: '#128C7E',
       gray: '#D2D1D4',
       text: '#1E1E1E',
       background: '#FFFFFF',
@@ -16,8 +16,8 @@ export const themes: Record<string, Theme> = {
   dark: {
     name: 'Dark Mode',
     colors: {
-      primary: '#4F72FF',
-      accent: '#FF4DA6',
+      primary: '#25D366',
+      accent: '#128C7E',
       gray: '#374151',
       text: '#F9FAFB',
       background: '#111827',
@@ -28,8 +28,8 @@ export const themes: Record<string, Theme> = {
   highContrast: {
     name: 'High Contrast',
     colors: {
-      primary: '#0000FF',
-      accent: '#FF0080',
+      primary: '#25D366',
+      accent: '#128C7E',
       gray: '#808080',
       text: '#000000',
       background: '#FFFFFF',

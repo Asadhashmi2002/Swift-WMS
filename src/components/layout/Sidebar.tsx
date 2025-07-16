@@ -8,7 +8,8 @@ import {
   Zap,
   Menu,
   X,
-  CreditCard
+  CreditCard,
+  MessageCircle
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useAppStore } from '../../stores/appStore';
@@ -81,10 +82,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
         <div className="flex items-center justify-between p-6 border-b border-[var(--color-border)]">
           <div className="flex items-center space-x-3">
             <div className="h-8 w-8 rounded-lg bg-[var(--color-primary)] flex items-center justify-center">
-              <Zap className="h-5 w-5 text-white" />
+              <MessageCircle className="h-5 w-5 text-white" />
             </div>
             <span className="text-lg font-bold text-[var(--color-text)]">
-              SwiftAMS
+              WMS
             </span>
           </div>
           <button

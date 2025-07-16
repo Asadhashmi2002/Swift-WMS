@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Zap } from 'lucide-react';
+import { ArrowRight, MessageCircle } from 'lucide-react';
 import { Button } from './ui/Button';
 import { Card } from './ui/Card';
 
@@ -9,17 +9,17 @@ interface LandingCardProps {
 
 export const LandingCard: React.FC<LandingCardProps> = ({ onStartWizard }) => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center p-4">
       <Card className="max-w-md w-full text-center">
         <div className="mb-8">
-          <div className="h-16 w-16 rounded-xl bg-[#003CFF] flex items-center justify-center mx-auto mb-6">
-            <Zap className="h-8 w-8 text-white" />
+          <div className="h-16 w-16 rounded-xl bg-[#25D366] flex items-center justify-center mx-auto mb-6">
+            <MessageCircle className="h-8 w-8 text-white" />
           </div>
           <h1 className="text-2xl font-bold text-[#1E1E1E] mb-2">
-            SwiftAMS
+            WhatsApp Management System
           </h1>
           <p className="text-gray-600 mb-6">
-            Connect your WhatsApp number in 6 easy steps
+            Complete WhatsApp Business API setup in 6 easy steps
           </p>
         </div>
 
@@ -68,7 +68,7 @@ export const LandingCard: React.FC<LandingCardProps> = ({ onStartWizard }) => {
         </div>
 
         <Button onClick={onStartWizard} size="lg" className="w-full">
-          Start Wizard
+          Start Setup
           <ArrowRight className="h-4 w-4 ml-2" />
         </Button>
 

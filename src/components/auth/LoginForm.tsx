@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Mail, Phone, Lock, Shield } from 'lucide-react';
+import { Mail, Phone, Lock, Shield, MessageCircle } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { Card } from '../ui/Card';
@@ -43,7 +43,7 @@ export const LoginForm: React.FC = () => {
         ? { email: credentials.email, password: credentials.password }
         : method === 'phone'
         ? { phone: credentials.phone, password: credentials.password }
-        : { phone: credentials.phone, otp: credentials.otp };
+        : { phone: credentials.phone, password: '', otp: credentials.otp };
 
       if (isTwoFactorEnabled && method !== 'otp') {
         if (!credentials.otp) {
@@ -71,10 +71,10 @@ export const LoginForm: React.FC = () => {
       <Card className="w-full max-w-md">
         <div className="text-center mb-8">
           <div className="h-12 w-12 rounded-xl bg-[var(--color-primary)] flex items-center justify-center mx-auto mb-4">
-            <Shield className="h-6 w-6 text-white" />
+            <MessageCircle className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-[var(--color-text)]">Welcome to SwiftAMS</h1>
-          <p className="text-gray-500 mt-2">Sign in to your account</p>
+          <h1 className="text-2xl font-bold text-[var(--color-text)]">Welcome to WMS</h1>
+          <p className="text-gray-500 mt-2">WhatsApp Management System</p>
         </div>
 
         {/* Method Tabs */}
