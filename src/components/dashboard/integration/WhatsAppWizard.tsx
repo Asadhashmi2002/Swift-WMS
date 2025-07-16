@@ -48,24 +48,25 @@ export const WhatsAppWizard: React.FC<WhatsAppWizardProps> = ({ onComplete, onCa
 
   return (
     <div className="fixed inset-0 z-50 bg-white">
-      {/* Header */}
-      <div className="border-b border-[var(--color-border)] p-4">
+      {/* Main Header */}
+      <div className="border-b border-[var(--color-border)] px-4 py-3 sm:py-4">
         <div className="flex items-center justify-between">
-          <h1 className="text-xl font-bold text-[var(--color-text)]">
+          <h1 className="text-lg sm:text-xl font-bold text-[var(--color-text)]">
             WhatsApp API Setup Wizard
           </h1>
           <Button
             variant="ghost"
             size="sm"
             onClick={onCancel}
+            className="p-2 sm:p-3"
           >
-            <X className="h-4 w-4" />
+            <X className="h-4 w-4 sm:h-5 sm:w-5" />
           </Button>
         </div>
       </div>
 
       {/* Wizard Content */}
-      <div className="h-[calc(100vh-73px)] overflow-auto">
+      <div className="h-[calc(100vh-65px)] sm:h-[calc(100vh-73px)] overflow-auto">
         {renderStep()}
       </div>
     </div>

@@ -50,13 +50,13 @@ export const Step2BusinessAccount: React.FC = () => {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'verified':
-        return <Badge variant="success">✅ Verified</Badge>;
+        return <Badge variant="success" className="text-xs">✅ Verified</Badge>;
       case 'pending':
-        return <Badge variant="warning">⏳ Pending</Badge>;
+        return <Badge variant="warning" className="text-xs">⏳ Pending</Badge>;
       case 'rejected':
-        return <Badge variant="error">❌ Rejected</Badge>;
+        return <Badge variant="error" className="text-xs">❌ Rejected</Badge>;
       default:
-        return <Badge variant="default">{status}</Badge>;
+        return <Badge variant="default" className="text-xs">{status}</Badge>;
     }
   };
 
@@ -67,21 +67,23 @@ export const Step2BusinessAccount: React.FC = () => {
       nextDisabled={!selectedBusiness}
     >
       <div>
-        <div className="mb-8">
-          <h2 className="text-2xl font-bold text-[#1E1E1E] mb-2">
+        <div className="mb-6 sm:mb-8">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1E1E1E] mb-2">
             Select Business Account
           </h2>
-          <p className="text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600">
             Choose an existing business account or create a new one to manage your WhatsApp Business API.
           </p>
         </div>
 
-        <div className="space-y-4">
+        <div className="space-y-3 sm:space-y-4">
           {isLoading ? (
             <Card>
-              <div className="animate-pulse">
-                <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+              <div className="p-4 sm:p-6">
+                <div className="animate-pulse">
+                  <div className="h-4 bg-gray-200 rounded w-1/4 mb-2"></div>
+                  <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                </div>
               </div>
             </Card>
           ) : (
@@ -98,47 +100,49 @@ export const Step2BusinessAccount: React.FC = () => {
                   <Card
                     className={`transition-all ${
                       selectedBusiness === business.id
-                        ? 'ring-2 ring-[#003CFF] border-[#003CFF]'
-                        : 'hover:border-[#003CFF]/50'
+                        ? 'ring-2 ring-[#25D366] border-[#25D366]'
+                        : 'hover:border-[#25D366]/50'
                     }`}
                   >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-3">
-                        <div className="h-10 w-10 rounded-lg bg-[#003CFF]/10 flex items-center justify-center">
-                          <Building2 className="h-5 w-5 text-[#003CFF]" />
+                    <div className="p-4 sm:p-6">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-3 min-w-0 flex-1">
+                          <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-lg bg-[#25D366]/10 flex items-center justify-center flex-shrink-0">
+                            <Building2 className="h-4 w-4 sm:h-5 sm:w-5 text-[#25D366]" />
+                          </div>
+                          <div className="min-w-0 flex-1">
+                            <h3 className="font-medium text-[#1E1E1E] text-sm sm:text-base truncate">{business.name}</h3>
+                            <p className="text-xs sm:text-sm text-gray-500">
+                              Created {new Date(business.created_time).toLocaleDateString()}
+                            </p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="font-medium text-[#1E1E1E]">{business.name}</h3>
-                          <p className="text-sm text-gray-500">
-                            Created {new Date(business.created_time).toLocaleDateString()}
-                          </p>
+                        <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
+                          {getStatusBadge(business.verification_status)}
+                          <input
+                            type="radio"
+                            checked={selectedBusiness === business.id}
+                            onChange={e => {
+                              e.stopPropagation();
+                              setSelectedBusiness(business.id);
+                              setData({ selectedBusinessId: business.id });
+                            }}
+                            className="h-4 w-4 text-[#25D366]"
+                          />
                         </div>
-                      </div>
-                      <div className="flex items-center space-x-3">
-                        {getStatusBadge(business.verification_status)}
-                        <input
-                          type="radio"
-                          checked={selectedBusiness === business.id}
-                          onChange={e => {
-                            e.stopPropagation();
-                            setSelectedBusiness(business.id);
-                            setData({ selectedBusinessId: business.id });
-                          }}
-                          className="h-4 w-4 text-[#003CFF]"
-                        />
                       </div>
                     </div>
                   </Card>
                 </div>
               ))}
 
-              <Card className="border-dashed border-2 border-gray-300 hover:border-[#003CFF] transition-colors">
+              <Card className="border-dashed border-2 border-gray-300 hover:border-[#25D366] transition-colors">
                 <button
                   onClick={() => setShowCreateModal(true)}
-                  className="w-full flex items-center justify-center space-x-2 text-gray-600 hover:text-[#003CFF] transition-colors"
+                  className="w-full flex items-center justify-center space-x-2 text-gray-600 hover:text-[#25D366] transition-colors p-4 sm:p-6"
                 >
-                  <Plus className="h-5 w-5" />
-                  <span>Create New Business Account</span>
+                  <Plus className="h-4 w-4 sm:h-5 sm:w-5" />
+                  <span className="text-sm sm:text-base">Create New Business Account</span>
                 </button>
               </Card>
             </>
@@ -152,7 +156,7 @@ export const Step2BusinessAccount: React.FC = () => {
           title="Create Business Account"
           size="md"
         >
-          <div className="space-y-4">
+          <div className="space-y-4 p-4 sm:p-6">
             <Input
               label="Business Name *"
               value={newBusinessData.name}
@@ -178,7 +182,7 @@ export const Step2BusinessAccount: React.FC = () => {
               <Button
                 variant="outline"
                 onClick={() => setShowCreateModal(false)}
-                className="flex-1"
+                className="flex-1 text-sm sm:text-base"
               >
                 Cancel
               </Button>
@@ -186,7 +190,7 @@ export const Step2BusinessAccount: React.FC = () => {
                 onClick={handleCreateBusiness}
                 loading={createBusiness.isPending}
                 disabled={!newBusinessData.name}
-                className="flex-1"
+                className="flex-1 text-sm sm:text-base"
               >
                 Create Business
               </Button>

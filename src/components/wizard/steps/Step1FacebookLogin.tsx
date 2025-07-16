@@ -31,23 +31,23 @@ export const Step1FacebookLogin: React.FC = () => {
       showPrev={false}
     >
       <div className="text-center">
-        <div className="mb-8">
-          <div className="h-16 w-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
-            <Facebook className="h-8 w-8 text-blue-600" />
+        <div className="mb-6 sm:mb-8">
+          <div className="h-12 w-12 sm:h-16 sm:w-16 rounded-full bg-blue-100 flex items-center justify-center mx-auto mb-4">
+            <Facebook className="h-6 w-6 sm:h-8 sm:w-8 text-blue-600" />
           </div>
-          <h2 className="text-2xl font-bold text-[#1E1E1E] mb-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-[#1E1E1E] mb-2">
             Connect Your Facebook Account
           </h2>
-          <p className="text-gray-600">
+          <p className="text-sm sm:text-base text-gray-600 px-4 sm:px-0">
             We need to connect to your Facebook account to access your business accounts and set up WhatsApp Business API.
           </p>
         </div>
 
         <Card className="max-w-md mx-auto">
-          <div className="space-y-4">
+          <div className="space-y-4 p-4 sm:p-6">
             <div className="text-left">
-              <h3 className="font-medium text-[#1E1E1E] mb-2">What we'll access:</h3>
-              <ul className="text-sm text-gray-600 space-y-1">
+              <h3 className="font-medium text-[#1E1E1E] mb-2 text-sm sm:text-base">What we'll access:</h3>
+              <ul className="text-xs sm:text-sm text-gray-600 space-y-1">
                 <li>• Your business accounts</li>
                 <li>• WhatsApp Business accounts</li>
                 <li>• Basic profile information</li>
@@ -57,7 +57,7 @@ export const Step1FacebookLogin: React.FC = () => {
             <Button
               onClick={handleFacebookLogin}
               loading={facebookLogin.isPending}
-              className="w-full bg-blue-600 hover:bg-blue-700"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-sm sm:text-base"
             >
               <Facebook className="h-4 w-4 mr-2" />
               Continue with Facebook
