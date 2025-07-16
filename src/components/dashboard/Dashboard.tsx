@@ -78,13 +78,11 @@ export const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="h-screen bg-[var(--color-background)] flex">
+    <div className="h-screen bg-[var(--color-background)] flex flex-col lg:flex-row">
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
-      
       <div className="flex-1 flex flex-col overflow-hidden">
         <Header title={getTabTitle()} />
-        
-        <main className="flex-1 overflow-hidden">
+        <main className="flex-1 overflow-auto min-w-0 w-full">
           {renderTabContent()}
         </main>
       </div>

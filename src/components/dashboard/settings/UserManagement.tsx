@@ -15,12 +15,18 @@ export const UserManagement: React.FC = () => {
   
   const [showUserModal, setShowUserModal] = useState(false);
   const [editingUser, setEditingUser] = useState<User | null>(null);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    username: string;
+    email: string;
+    phone: string;
+    role: 'agent' | 'admin' | 'manager';
+    permissions: string[];
+  }>({
     username: '',
     email: '',
     phone: '',
-    role: 'agent' as const,
-    permissions: [] as string[],
+    role: 'agent',
+    permissions: [],
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -94,7 +100,7 @@ export const UserManagement: React.FC = () => {
         if (!canCreateUser()) {
           throw new Error(`Seat limit of ${seatLimit} reached`);
         }
-        await createUser(formData);
+        await createUser({ ...formData, isOnline: false });
       }
       handleCloseModal();
     } catch (err) {
@@ -177,20 +183,20 @@ export const UserManagement: React.FC = () => {
       {/* Users Table */}
       <Card padding="none">
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full min-w-[600px] text-sm">
             <thead>
               <tr className="border-b border-[var(--color-border)]">
-                <th className="text-left p-4 font-medium text-[var(--color-text)]">User</th>
-                <th className="text-left p-4 font-medium text-[var(--color-text)]">Role</th>
-                <th className="text-left p-4 font-medium text-[var(--color-text)]">Status</th>
-                <th className="text-left p-4 font-medium text-[var(--color-text)]">Permissions</th>
-                <th className="text-right p-4 font-medium text-[var(--color-text)]">Actions</th>
+                <th className="text-left p-2 sm:p-4 font-medium text-[var(--color-text)]">User</th>
+                <th className="text-left p-2 sm:p-4 font-medium text-[var(--color-text)]">Role</th>
+                <th className="text-left p-2 sm:p-4 font-medium text-[var(--color-text)]">Status</th>
+                <th className="text-left p-2 sm:p-4 font-medium text-[var(--color-text)]">Permissions</th>
+                <th className="text-right p-2 sm:p-4 font-medium text-[var(--color-text)]">Actions</th>
               </tr>
             </thead>
             <tbody>
               {users.map((user) => (
                 <tr key={user.id} className="border-b border-[var(--color-border)] hover:bg-[var(--color-surface)]">
-                  <td className="p-4">
+                  <td className="p-2 sm:p-4">
                     <div className="flex items-center space-x-3">
                       <div className="h-8 w-8 rounded-full bg-[var(--color-primary)] flex items-center justify-center">
                         <span className="text-white text-sm font-medium">
@@ -199,42 +205,28 @@ export const UserManagement: React.FC = () => {
                       </div>
                       <div>
                         <div className="font-medium text-[var(--color-text)]">{user.username}</div>
-                        <div className="text-sm text-gray-500">{user.email}</div>
+                        <div className="text-xs sm:text-sm text-gray-500">{user.email}</div>
                       </div>
                     </div>
                   </td>
-                  <td className="p-4">
+                  <td className="p-2 sm:p-4">
                     <Badge variant={getRoleBadgeVariant(user.role)} size="sm">
                       {user.role}
                     </Badge>
                   </td>
-                  <td className="p-4">
-                    <div className="flex items-center space-x-2">
-                      <div className={`h-2 w-2 rounded-full ${user.isOnline ? 'bg-green-500' : 'bg-gray-400'}`} />
-                      <span className="text-sm text-gray-500">
-                        {user.isOnline ? 'Online' : 'Offline'}
-                      </span>
-                    </div>
+                  <td className="p-2 sm:p-4">
+                    <span className="text-xs sm:text-sm text-green-600">Active</span>
                   </td>
-                  <td className="p-4">
+                  <td className="p-2 sm:p-4">
                     <div className="flex flex-wrap gap-1">
-                      {user.permissions.includes('all') ? (
-                        <Badge variant="error" size="sm">All Permissions</Badge>
-                      ) : (
-                        user.permissions.slice(0, 2).map((permission) => (
-                          <Badge key={permission} variant="default" size="sm">
-                            {permission.replace('_', ' ')}
-                          </Badge>
-                        ))
-                      )}
-                      {user.permissions.length > 2 && !user.permissions.includes('all') && (
-                        <Badge variant="default" size="sm">
-                          +{user.permissions.length - 2} more
+                      {user.permissions.map((perm) => (
+                        <Badge key={perm} variant="default" size="sm">
+                          {perm}
                         </Badge>
-                      )}
+                      ))}
                     </div>
                   </td>
-                  <td className="p-4">
+                  <td className="p-2 sm:p-4 text-right">
                     <div className="flex items-center justify-end space-x-2">
                       <Button
                         variant="ghost"
@@ -258,7 +250,6 @@ export const UserManagement: React.FC = () => {
             </tbody>
           </table>
         </div>
-
         {users.length === 0 && (
           <div className="text-center py-8 text-gray-500">
             No users found. Add your first user to get started.

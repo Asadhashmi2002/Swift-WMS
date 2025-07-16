@@ -418,28 +418,28 @@ export const SettingsTab: React.FC = () => {
                 </Button>
               </div>
               <div className="overflow-x-auto">
-                <table className="w-full">
+                <table className="w-full min-w-[500px] text-sm">
                   <thead>
                     <tr className="border-b border-[var(--color-border)]">
-                      <th className="text-left p-3 font-medium text-[var(--color-text)]">Invoice</th>
-                      <th className="text-left p-3 font-medium text-[var(--color-text)]">Date</th>
-                      <th className="text-left p-3 font-medium text-[var(--color-text)]">Amount</th>
-                      <th className="text-left p-3 font-medium text-[var(--color-text)]">Status</th>
-                      <th className="text-right p-3 font-medium text-[var(--color-text)]">Actions</th>
+                      <th className="text-left p-2 sm:p-3 font-medium text-[var(--color-text)]">Invoice</th>
+                      <th className="text-left p-2 sm:p-3 font-medium text-[var(--color-text)]">Date</th>
+                      <th className="text-left p-2 sm:p-3 font-medium text-[var(--color-text)]">Amount</th>
+                      <th className="text-left p-2 sm:p-3 font-medium text-[var(--color-text)]">Status</th>
+                      <th className="text-right p-2 sm:p-3 font-medium text-[var(--color-text)]">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {invoices.map((invoice) => (
                       <tr key={invoice.id} className="border-b border-[var(--color-border)]">
-                        <td className="p-3">
+                        <td className="p-2 sm:p-3">
                           <div className="font-medium text-[var(--color-text)]">{invoice.id}</div>
                         </td>
-                        <td className="p-3 text-gray-600">{invoice.date}</td>
-                        <td className="p-3 font-medium">${invoice.amount.toFixed(2)}</td>
-                        <td className="p-3">
+                        <td className="p-2 sm:p-3 text-gray-600">{invoice.date}</td>
+                        <td className="p-2 sm:p-3 font-medium">${invoice.amount.toFixed(2)}</td>
+                        <td className="p-2 sm:p-3">
                           <Badge variant="success" size="sm">Paid</Badge>
                         </td>
-                        <td className="p-3 text-right">
+                        <td className="p-2 sm:p-3 text-right">
                           <Button 
                             variant="ghost" 
                             size="sm"
@@ -529,18 +529,18 @@ export const SettingsTab: React.FC = () => {
 
   return (
     <>
-      <div className="flex h-full">
-        {/* Settings Navigation */}
-        <div className="w-64 border-r border-[var(--color-border)] p-4">
-          <h2 className="font-semibold text-[var(--color-text)] mb-4">Settings</h2>
-          <nav className="space-y-1">
+      <div className="h-full flex flex-col">
+        {/* Settings Navigation - Horizontal on desktop, vertical on mobile */}
+        <div className="border-b border-[var(--color-border)] p-4">
+          <h2 className="font-semibold text-[var(--color-text)] mb-4 md:hidden">Settings</h2>
+          <nav className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2">
             {sections.map((section) => {
               const Icon = section.icon;
               return (
                 <button
                   key={section.id}
                   onClick={() => setActiveSection(section.id as SettingsSection)}
-                  className={`w-full flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors ${
+                  className={`flex items-center space-x-3 px-3 py-2 rounded-lg text-left transition-colors w-full md:w-auto ${
                     activeSection === section.id
                       ? 'bg-[var(--color-primary)] text-white'
                       : 'text-[var(--color-text)] hover:bg-[var(--color-gray)]'
@@ -553,12 +553,12 @@ export const SettingsTab: React.FC = () => {
             })}
           </nav>
         </div>
-
         {/* Settings Content */}
-        <div className="flex-1 p-6 overflow-y-auto">
+        <div className="flex-1 p-4 sm:p-6 overflow-y-auto">
           {renderContent()}
         </div>
       </div>
+      {/* Modals remain unchanged, but ensure they use w-full and max-w-xs on mobile if needed */}
 
       {/* Add Payment Method Modal */}
       <Modal
@@ -799,28 +799,28 @@ export const SettingsTab: React.FC = () => {
       >
         <div className="space-y-4">
           <div className="overflow-x-auto">
-            <table className="w-full">
+            <table className="w-full min-w-[500px] text-sm">
               <thead>
                 <tr className="border-b border-[var(--color-border)]">
-                  <th className="text-left p-3 font-medium text-[var(--color-text)]">Invoice</th>
-                  <th className="text-left p-3 font-medium text-[var(--color-text)]">Date</th>
-                  <th className="text-left p-3 font-medium text-[var(--color-text)]">Amount</th>
-                  <th className="text-left p-3 font-medium text-[var(--color-text)]">Status</th>
-                  <th className="text-right p-3 font-medium text-[var(--color-text)]">Actions</th>
+                  <th className="text-left p-2 sm:p-3 font-medium text-[var(--color-text)]">Invoice</th>
+                  <th className="text-left p-2 sm:p-3 font-medium text-[var(--color-text)]">Date</th>
+                  <th className="text-left p-2 sm:p-3 font-medium text-[var(--color-text)]">Amount</th>
+                  <th className="text-left p-2 sm:p-3 font-medium text-[var(--color-text)]">Status</th>
+                  <th className="text-right p-2 sm:p-3 font-medium text-[var(--color-text)]">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {invoices.map((invoice) => (
                   <tr key={invoice.id} className="border-b border-[var(--color-border)]">
-                    <td className="p-3">
+                    <td className="p-2 sm:p-3">
                       <div className="font-medium text-[var(--color-text)]">{invoice.id}</div>
                     </td>
-                    <td className="p-3 text-gray-600">{invoice.date}</td>
-                    <td className="p-3 font-medium">${invoice.amount.toFixed(2)}</td>
-                    <td className="p-3">
+                    <td className="p-2 sm:p-3 text-gray-600">{invoice.date}</td>
+                    <td className="p-2 sm:p-3 font-medium">${invoice.amount.toFixed(2)}</td>
+                    <td className="p-2 sm:p-3">
                       <Badge variant="success" size="sm">Paid</Badge>
                     </td>
-                    <td className="p-3 text-right">
+                    <td className="p-2 sm:p-3 text-right">
                       <Button 
                         variant="ghost" 
                         size="sm"

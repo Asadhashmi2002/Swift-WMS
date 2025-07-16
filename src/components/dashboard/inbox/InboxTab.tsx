@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Filter, Search } from 'lucide-react';
 import { Card } from '../../ui/Card';
 import { Input } from '../../ui/Input';
@@ -8,6 +8,7 @@ import { MessageList } from './MessageList';
 import { MessageInput } from './MessageInput';
 import { useChatStore } from '../../../stores/chatStore';
 import { useAuthStore } from '../../../stores/authStore';
+import { cn } from '../../../lib/utils';
 
 export const InboxTab: React.FC = () => {
   const { user } = useAuthStore();
@@ -20,6 +21,8 @@ export const InboxTab: React.FC = () => {
     selectChat,
     sendMessage,
   } = useChatStore();
+
+  const [showChatList, setShowChatList] = useState(true);
 
   useEffect(() => {
     loadChats();
@@ -35,9 +38,14 @@ export const InboxTab: React.FC = () => {
   const isDisabled = activeChat?.isLocked && activeChat?.lockedBy !== user?.id;
 
   return (
-    <div className="h-full flex">
+    <div className="h-full flex flex-col sm:flex-row">
       {/* Chat List */}
-      <div className="w-1/3 border-r border-[var(--color-border)]">
+      <div className={cn(
+        'sm:w-1/3 w-full border-r border-[var(--color-border)]',
+        !showChatList && 'hidden sm:block',
+        'sm:relative fixed top-16 left-0 right-0 bottom-0 z-40 bg-white sm:bg-transparent',
+        showChatList ? 'block' : 'hidden sm:block'
+      )}>
         <div className="p-4 border-b border-[var(--color-border)]">
           <div className="flex space-x-2 mb-4">
             <Input
@@ -48,14 +56,12 @@ export const InboxTab: React.FC = () => {
               <Search className="h-4 w-4" />
             </Button>
           </div>
-          
           <div className="flex items-center justify-between">
             <h2 className="font-medium text-[var(--color-text)]">Conversations</h2>
             <Button variant="ghost" size="sm">
               <Filter className="h-4 w-4" />
             </Button>
           </div>
-          
           <div className="flex items-center space-x-2 mt-2">
             <div className={`h-2 w-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`} />
             <span className="text-xs text-gray-500">
@@ -63,37 +69,48 @@ export const InboxTab: React.FC = () => {
             </span>
           </div>
         </div>
-        
         <ChatList
           chats={chats}
           selectedChat={activeChat}
-          onSelectChat={selectChat}
+          onSelectChat={(chat) => {
+            selectChat(chat);
+            setShowChatList(false);
+          }}
         />
       </div>
-
       {/* Chat Messages */}
-      <div className="flex-1 flex flex-col">
+      <div className={cn(
+        'flex-1 flex flex-col',
+        showChatList && 'hidden sm:flex'
+      )}>
         {activeChat ? (
           <>
-            <div className="p-4 border-b border-[var(--color-border)]">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h3 className="font-medium text-[var(--color-text)]">
-                    {activeChat.contactName}
-                  </h3>
-                  <p className="text-sm text-gray-500">{activeChat.contactPhone}</p>
-                </div>
-                
+            <div className="p-4 border-b border-[var(--color-border)] flex items-center justify-between">
+              <div>
+                <h3 className="font-medium text-[var(--color-text)]">
+                  {activeChat.contactName}
+                </h3>
+                <p className="text-sm text-gray-500">{activeChat.contactPhone}</p>
+              </div>
+              <div className="flex items-center space-x-2">
                 {activeChat.assignedAgent && (
                   <div className="text-sm text-gray-500">
                     Assigned to: {activeChat.assignedAgent.username}
                   </div>
                 )}
+                {/* Back button for mobile */}
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  className="sm:hidden"
+                  onClick={() => setShowChatList(true)}
+                  aria-label="Back to chat list"
+                >
+                  Back
+                </Button>
               </div>
             </div>
-            
             <MessageList messages={activeChatMessages} />
-            
             <MessageInput
               onSendMessage={handleSendMessage}
               disabled={isDisabled}

@@ -30,13 +30,12 @@ export const IntegrationTab: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-[var(--color-text)]">Integrations</h2>
+      <div className="flex items-center justify-between flex-col sm:flex-row gap-4">
+        <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-text)]">Integrations</h2>
       </div>
-
       {/* WhatsApp Business API */}
       <Card>
-        <div className="flex items-start justify-between">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
           <div className="flex items-center space-x-4">
             <div className="h-12 w-12 rounded-xl bg-green-100 flex items-center justify-center">
               <MessageSquare className="h-6 w-6 text-green-600" />
@@ -50,73 +49,21 @@ export const IntegrationTab: React.FC = () => {
               </p>
             </div>
           </div>
-          
-          <div className="flex items-center space-x-3">
-            <Badge 
-              variant={whatsappConnected ? 'success' : 'error'}
-              className="flex items-center space-x-1"
-            >
-              {whatsappConnected ? (
-                <>
-                  <CheckCircle className="h-3 w-3" />
-                  <span>Connected</span>
-                </>
-              ) : (
-                <>
-                  <AlertCircle className="h-3 w-3" />
-                  <span>Disconnected</span>
-                </>
-              )}
-            </Badge>
-            
-            {whatsappConnected ? (
-              <div className="flex space-x-2">
-                <Button variant="outline" size="sm">
-                  <Settings className="h-4 w-4 mr-2" />
-                  Configure
-                </Button>
-                <Button 
-                  variant="outline" 
-                  size="sm" 
-                  onClick={handleDisconnect}
-                >
-                  Disconnect
-                </Button>
-              </div>
+          <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto mt-4 sm:mt-0">
+            {!whatsappConnected ? (
+              <Button onClick={handleConnect} loading={connecting} className="w-full sm:w-auto">
+                Connect
+              </Button>
             ) : (
-              <Button 
-                onClick={handleConnect}
-                size="sm"
-              >
-                <Play className="h-4 w-4 mr-2" />
-                Start Setup Wizard
+              <Button onClick={handleDisconnect} variant="outline" className="w-full sm:w-auto">
+                Disconnect
               </Button>
             )}
           </div>
         </div>
-
-        {whatsappConnected && (
-          <div className="mt-6 pt-6 border-t border-[var(--color-border)]">
-            <div className="grid md:grid-cols-3 gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-[var(--color-text)] mb-1">98.5%</div>
-                <div className="text-sm text-gray-500">Delivery Rate</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-[var(--color-text)] mb-1">1,247</div>
-                <div className="text-sm text-gray-500">Messages Today</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-[var(--color-text)] mb-1">Active</div>
-                <div className="text-sm text-gray-500">API Status</div>
-              </div>
-            </div>
-          </div>
-        )}
       </Card>
-
       {/* Other Integrations */}
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <div className="flex items-center space-x-4 mb-4">
             <div className="h-10 w-10 rounded-lg bg-blue-100 flex items-center justify-center">
@@ -127,10 +74,8 @@ export const IntegrationTab: React.FC = () => {
               <p className="text-sm text-gray-500">Real-time event notifications</p>
             </div>
           </div>
-          
           <Badge variant="warning" size="sm">Coming Soon</Badge>
         </Card>
-
         <Card>
           <div className="flex items-center space-x-4 mb-4">
             <div className="h-10 w-10 rounded-lg bg-purple-100 flex items-center justify-center">
@@ -141,10 +86,8 @@ export const IntegrationTab: React.FC = () => {
               <p className="text-sm text-gray-500">Fallback SMS messaging</p>
             </div>
           </div>
-          
           <Badge variant="warning" size="sm">Coming Soon</Badge>
         </Card>
-
         <Card>
           <div className="flex items-center space-x-4 mb-4">
             <div className="h-10 w-10 rounded-lg bg-orange-100 flex items-center justify-center">
@@ -155,21 +98,6 @@ export const IntegrationTab: React.FC = () => {
               <p className="text-sm text-gray-500">Sync with your CRM system</p>
             </div>
           </div>
-          
-          <Badge variant="warning" size="sm">Coming Soon</Badge>
-        </Card>
-
-        <Card>
-          <div className="flex items-center space-x-4 mb-4">
-            <div className="h-10 w-10 rounded-lg bg-red-100 flex items-center justify-center">
-              <AlertCircle className="h-5 w-5 text-red-600" />
-            </div>
-            <div>
-              <h3 className="font-semibold text-[var(--color-text)]">Alert System</h3>
-              <p className="text-sm text-gray-500">Emergency broadcast alerts</p>
-            </div>
-          </div>
-          
           <Badge variant="warning" size="sm">Coming Soon</Badge>
         </Card>
       </div>

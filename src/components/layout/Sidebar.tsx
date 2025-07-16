@@ -52,8 +52,30 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
       <div
         className={cn(
           'fixed left-0 top-0 z-50 h-full w-64 bg-[var(--color-surface)] border-r border-[var(--color-border)] transition-transform lg:translate-x-0 lg:static lg:z-auto',
+          'max-w-full', // allow full width on mobile
+          'sm:w-64 w-full', // full width on mobile, fixed on sm+
           sidebarOpen ? 'translate-x-0' : '-translate-x-full'
         )}
+        onTouchStart={(e) => {
+          // Start swipe gesture
+          (window as any)._sidebarTouchStartX = e.touches[0].clientX;
+        }}
+        onTouchMove={(e) => {
+          // Track swipe
+          (window as any)._sidebarTouchMoveX = e.touches[0].clientX;
+        }}
+        onTouchEnd={() => {
+          // If swipe left, close sidebar
+          if (
+            typeof (window as any)._sidebarTouchStartX === 'number' &&
+            typeof (window as any)._sidebarTouchMoveX === 'number' &&
+            (window as any)._sidebarTouchStartX - (window as any)._sidebarTouchMoveX > 50
+          ) {
+            setSidebarOpen(false);
+          }
+          (window as any)._sidebarTouchStartX = null;
+          (window as any)._sidebarTouchMoveX = null;
+        }}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-[var(--color-border)]">
@@ -68,6 +90,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
           <button
             onClick={() => setSidebarOpen(false)}
             className="lg:hidden p-1 rounded-lg hover:bg-[var(--color-gray)] transition-colors"
+            aria-label="Close sidebar"
           >
             <X className="h-5 w-5" />
           </button>
@@ -78,7 +101,6 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
           {filteredTabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
-            
             return (
               <button
                 key={tab.id}
@@ -90,7 +112,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
                   'w-full flex items-center space-x-3 px-4 py-3 rounded-xl text-left transition-all',
                   isActive
                     ? 'bg-[var(--color-primary)] text-white shadow-lg'
-                    : 'text-[var(--color-text)] hover:bg-[var(--color-gray)]'
+                    : 'text-[var(--color-text)] hover:bg-[var(--color-gray)]',
+                  'sm:text-base text-sm' // smaller text on mobile
                 )}
               >
                 <Icon className="h-5 w-5" />

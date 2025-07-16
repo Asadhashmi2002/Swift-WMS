@@ -132,25 +132,23 @@ export const AnalyticsTab: React.FC = () => {
     <div className="space-y-6">
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-        <h2 className="text-2xl font-bold text-[var(--color-text)]">Analytics</h2>
-        
-        <div className="flex flex-col sm:flex-row gap-2">
-          <div className="flex gap-2">
+        <h2 className="text-xl sm:text-2xl font-bold text-[var(--color-text)]">Analytics</h2>
+        <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+          <div className="flex gap-2 w-full sm:w-auto">
             <Input
               type="date"
               value={dateRange.start}
               onChange={(e) => setDateRange(prev => ({ ...prev, start: e.target.value }))}
-              className="w-auto"
+              className="w-full sm:w-auto"
             />
             <Input
               type="date"
               value={dateRange.end}
               onChange={(e) => setDateRange(prev => ({ ...prev, end: e.target.value }))}
-              className="w-auto"
+              className="w-full sm:w-auto"
             />
           </div>
-          
-          <div className="flex gap-2">
+          <div className="flex gap-2 w-full sm:w-auto">
             <Button
               variant="outline"
               size="sm"
@@ -158,6 +156,7 @@ export const AnalyticsTab: React.FC = () => {
                 start: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                 end: new Date().toISOString().split('T')[0],
               })}
+              className="w-full sm:w-auto"
             >
               30 Days
             </Button>
@@ -168,13 +167,13 @@ export const AnalyticsTab: React.FC = () => {
                 start: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                 end: new Date().toISOString().split('T')[0],
               })}
+              className="w-full sm:w-auto"
             >
               7 Days
             </Button>
           </div>
         </div>
       </div>
-
       {/* KPI Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
         {kpiCards.map((kpi, index) => {
@@ -184,30 +183,30 @@ export const AnalyticsTab: React.FC = () => {
               <div className={`inline-flex items-center justify-center w-12 h-12 rounded-xl ${kpi.bgColor} mb-3`}>
                 <Icon className={`h-6 w-6 ${kpi.color}`} />
               </div>
-              <h3 className="text-2xl font-bold text-[var(--color-text)] mb-1">
+              <h3 className="text-xl sm:text-2xl font-bold text-[var(--color-text)] mb-1">
                 {loading ? '...' : kpi.value}
               </h3>
-              <p className="text-sm text-gray-500">{kpi.title}</p>
+              <p className="text-xs sm:text-sm text-gray-500">{kpi.title}</p>
             </Card>
           );
         })}
       </div>
-
       {/* Chart */}
-      <Card>
-        <div className="h-80">
-          {analytics && !loading ? (
-            <Bar data={chartData} options={chartOptions} />
-          ) : (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-gray-500">
-                {loading ? 'Loading chart data...' : 'No data available'}
+      <div className="overflow-x-auto">
+        <Card>
+          <div className="h-80 min-w-[350px]">
+            {analytics && !loading ? (
+              <Bar data={chartData} options={chartOptions} />
+            ) : (
+              <div className="flex items-center justify-center h-full">
+                <div className="text-gray-500">
+                  {loading ? 'Loading chart data...' : 'No data available'}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
-      </Card>
-
+            )}
+          </div>
+        </Card>
+      </div>
       {/* Detailed Stats */}
       {analytics && (
         <div className="grid md:grid-cols-2 gap-6">

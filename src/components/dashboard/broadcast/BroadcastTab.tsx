@@ -40,7 +40,7 @@ export const BroadcastTab: React.FC = () => {
 
   const handleCreateTemplate = async () => {
     try {
-      await createTemplate(newTemplate);
+      await createTemplate({ ...newTemplate, createdAt: new Date() });
       setNewTemplate({ name: '', content: '', type: 'text' });
       setShowTemplateModal(false);
     } catch (error) {
@@ -82,13 +82,12 @@ export const BroadcastTab: React.FC = () => {
         </Button>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Compose Section */}
         <Card>
           <h3 className="text-lg font-semibold text-[var(--color-text)] mb-4">
             Compose Broadcast
           </h3>
-
           <div className="space-y-4">
             {/* Template Selection */}
             <div>
@@ -112,7 +111,6 @@ export const BroadcastTab: React.FC = () => {
                 ))}
               </select>
             </div>
-
             {/* Content Editor */}
             <div>
               <label className="block text-sm font-medium text-[var(--color-text)] mb-2">
@@ -126,7 +124,6 @@ export const BroadcastTab: React.FC = () => {
                 className="w-full p-3 border border-[var(--color-border)] rounded-xl bg-[var(--color-background)] text-[var(--color-text)] resize-none"
               />
             </div>
-
             {/* Audience Selection */}
             <div>
               <label className="block text-sm font-medium text-[var(--color-text)] mb-2">
