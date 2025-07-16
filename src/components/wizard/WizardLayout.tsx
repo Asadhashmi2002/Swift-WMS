@@ -98,7 +98,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({
         </div>
 
         {/* Navigation */}
-        <div className="border-t border-[#D2D1D4] p-6">
+        <div className="border-t border-[#D2D1D4] p-6 bg-white fixed bottom-0 right-0 left-80 z-50 shadow-lg">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <div>
               {showPrev && currentStep > 1 && (
@@ -117,7 +117,6 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({
               <span className="text-sm text-gray-500">
                 Step {currentStep} of {steps.length}
               </span>
-              
               {onNext && (
                 <Button
                   onClick={onNext}

@@ -87,38 +87,49 @@ export const Step2BusinessAccount: React.FC = () => {
           ) : (
             <>
               {businesses?.map((business) => (
-                <Card
+                <div
                   key={business.id}
-                  className={`cursor-pointer transition-all ${
-                    selectedBusiness === business.id
-                      ? 'ring-2 ring-[#003CFF] border-[#003CFF]'
-                      : 'hover:border-[#003CFF]/50'
-                  }`}
-                  onClick={() => setSelectedBusiness(business.id)}
+                  className="cursor-pointer"
+                  onClick={() => {
+                    setSelectedBusiness(business.id);
+                    setData({ selectedBusinessId: business.id });
+                  }}
                 >
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <div className="h-10 w-10 rounded-lg bg-[#003CFF]/10 flex items-center justify-center">
-                        <Building2 className="h-5 w-5 text-[#003CFF]" />
+                  <Card
+                    className={`transition-all ${
+                      selectedBusiness === business.id
+                        ? 'ring-2 ring-[#003CFF] border-[#003CFF]'
+                        : 'hover:border-[#003CFF]/50'
+                    }`}
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="h-10 w-10 rounded-lg bg-[#003CFF]/10 flex items-center justify-center">
+                          <Building2 className="h-5 w-5 text-[#003CFF]" />
+                        </div>
+                        <div>
+                          <h3 className="font-medium text-[#1E1E1E]">{business.name}</h3>
+                          <p className="text-sm text-gray-500">
+                            Created {new Date(business.created_time).toLocaleDateString()}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <h3 className="font-medium text-[#1E1E1E]">{business.name}</h3>
-                        <p className="text-sm text-gray-500">
-                          Created {new Date(business.created_time).toLocaleDateString()}
-                        </p>
+                      <div className="flex items-center space-x-3">
+                        {getStatusBadge(business.verification_status)}
+                        <input
+                          type="radio"
+                          checked={selectedBusiness === business.id}
+                          onChange={e => {
+                            e.stopPropagation();
+                            setSelectedBusiness(business.id);
+                            setData({ selectedBusinessId: business.id });
+                          }}
+                          className="h-4 w-4 text-[#003CFF]"
+                        />
                       </div>
                     </div>
-                    <div className="flex items-center space-x-3">
-                      {getStatusBadge(business.verification_status)}
-                      <input
-                        type="radio"
-                        checked={selectedBusiness === business.id}
-                        onChange={() => setSelectedBusiness(business.id)}
-                        className="h-4 w-4 text-[#003CFF]"
-                      />
-                    </div>
-                  </div>
-                </Card>
+                  </Card>
+                </div>
               ))}
 
               <Card className="border-dashed border-2 border-gray-300 hover:border-[#003CFF] transition-colors">

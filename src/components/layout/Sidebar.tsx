@@ -7,7 +7,8 @@ import {
   Users,
   Zap,
   Menu,
-  X
+  X,
+  CreditCard
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 import { useAppStore } from '../../stores/appStore';
@@ -27,6 +28,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange }) => {
     { id: 'broadcast', icon: Radio, label: 'Broadcast', permission: 'broadcast' },
     { id: 'analytics', icon: BarChart3, label: 'Analytics', permission: 'view_analytics' },
     { id: 'integration', icon: Zap, label: 'Integration', permission: 'all' },
+    { id: 'payments', icon: CreditCard, label: 'Payments', permission: 'Payments' },
     { id: 'settings', icon: Settings, label: 'Settings', permission: 'manage_users' },
   ];
 

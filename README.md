@@ -1,328 +1,268 @@
-# SwiftAMS - WhatsApp API On-Boarding Wizard
+# SwiftAMS-WMS - WhatsApp Management System
 
-A comprehensive WhatsApp Business API setup wizard built with React 18, TypeScript, and modern web technologies. This wizard guides users through the complete process of connecting their WhatsApp Business account to the Meta Graph API.
+A comprehensive WhatsApp Business API management system with integrated Payments & Auto-Billing functionality.
 
 ## 🚀 Features
 
-### Core Wizard Flow
-- **6-Step Setup Process**: Streamlined onboarding from Facebook login to API credentials
-- **Facebook OAuth Integration**: Secure authentication with Facebook Business accounts
-- **Business Account Management**: Create or select existing Business Manager accounts
-- **Document Verification**: Upload and verify business documents
-- **WABA Creation**: Set up WhatsApp Business Accounts
-- **Phone Number Verification**: Add and verify phone numbers with SMS/Voice codes
-- **API Configuration**: Generate and configure API credentials and webhooks
+### Core Features
+- WhatsApp Business API integration
+- Real-time messaging and chat management
+- Message templates and broadcasting
+- Analytics dashboard
+- User management and permissions
 
-### Technical Features
-- **React Query Integration**: Efficient data fetching and caching
-- **Mock Service Worker**: Complete API simulation for development
-- **Session Persistence**: Resume wizard progress after page reload
-- **Form Validation**: Comprehensive input validation with error handling
-- **Responsive Design**: Mobile-first approach with tablet and desktop support
-- **Accessibility**: WCAG-AA compliant with proper contrast ratios
-
-### Design System
-- **SwiftAMS Brand Colors**: Primary #003CFF, Accent #FA0082, Gray #D2D1D4, Text #1E1E1E
-- **Typography**: Poppins for headings (700/500 weights), Inter for body (400 weight)
-- **Consistent Spacing**: 8px grid system throughout
-- **Modern UI**: 12px border radius, medium shadows, smooth transitions
+### Payments & Auto-Billing Module
+- **Multi-Gateway Support**: Stripe (primary) + Razorpay (fallback)
+- **Subscription Management**: Plan-based billing with seat limits
+- **Auto-Renewal**: Automated subscription renewal with retry logic
+- **Invoice Management**: PDF generation and download
+- **WhatsApp Notifications**: Payment confirmations and failure alerts
+- **Admin Dashboard**: Complete billing management interface
 
 ## 🛠 Tech Stack
 
-- **Frontend**: React 18 + TypeScript + Vite
-- **Styling**: Tailwind CSS 3 with custom design system
-- **State Management**: Zustand for wizard state
-- **Data Fetching**: React Query (TanStack Query)
-- **API Mocking**: Mock Service Worker (MSW)
-- **Form Validation**: Yup schema validation
-- **Notifications**: React Hot Toast
-- **Icons**: Lucide React
+### Backend
+- **Database**: PostgreSQL with Prisma ORM
+- **Payment Gateways**: Stripe + Razorpay
+- **Caching**: Redis
+- **Cron Jobs**: Automated subscription renewal
 
-## 📦 Installation & Setup
+### Frontend
+- **Framework**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Styling**: Tailwind CSS
+- **State Management**: Zustand
+- **HTTP Client**: React Query
 
-```bash
-# Install dependencies
-npm install
+## 📦 Installation
 
-# Start development server
-npm run dev
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Asadhashmi2002/Swift-WMS.git
+   cd Swift-WMS
+   ```
 
-# Build for production
-npm run build
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-# Preview production build
-npm run preview
-```
+3. **Set up environment variables**
+   ```bash
+   cp env.example .env
+   ```
+   
+   Update `.env` with your configuration:
+   ```env
+   # Database
+   DATABASE_URL="postgresql://username:password@localhost:5432/swiftams"
+   
+   # Payment Gateway (stripe or razorpay)
+   PAYMENT_GW="stripe"
+   
+   # Stripe Configuration
+   STRIPE_SECRET="sk_test_your_stripe_secret_key"
+   STRIPE_WEBHOOK_SECRET="whsec_your_stripe_webhook_secret"
+   
+   # Razorpay Configuration
+   RZP_KEY_ID="rzp_test_your_razorpay_key_id"
+   RZP_KEY_SECRET="your_razorpay_key_secret"
+   ```
 
-## 🌍 Environment Variables
+4. **Set up the database**
+   ```bash
+   # Generate Prisma client
+   npm run db:generate
+   
+   # Push schema to database
+   npm run db:push
+   
+   # Seed initial data
+   npm run db:seed
+   ```
 
-Create a `.env` file in the root directory:
-
-```env
-# Meta Graph API Configuration (replace with real endpoints)
-VITE_META_API_BASE_URL=https://graph.facebook.com/v18.0
-VITE_FACEBOOK_APP_ID=your_facebook_app_id
-
-# SwiftAMS Backend Configuration
-VITE_SWIFTAMS_API_URL=https://api.swiftams.com/v1
-VITE_WEBHOOK_BASE_URL=https://api.swiftams.com/webhook
-
-# Feature Flags
-VITE_ENABLE_MOCK_MODE=true
-VITE_ENABLE_ANALYTICS=true
-```
+5. **Start the development server**
+   ```bash
+   npm run dev
+   ```
 
 ## 🏗 Project Structure
 
 ```
 src/
-├── components/           # React components
-│   ├── ui/              # Reusable UI components
-│   ├── wizard/          # Wizard-specific components
-│   │   ├── steps/       # Individual wizard steps
-│   │   └── WizardLayout.tsx
-│   └── LandingCard.tsx  # Landing page component
-├── stores/              # Zustand state management
-│   └── wizardStore.ts   # Wizard state and persistence
-├── hooks/               # Custom React hooks
-│   └── useMetaQuery.ts  # React Query hooks for Meta API
-├── lib/                 # Utilities and configurations
-│   ├── mockApi.ts       # MSW mock API handlers
-│   └── utils.ts         # Helper functions
-├── types/               # TypeScript type definitions
-└── App.tsx             # Main application component
+├── components/
+│   ├── ui/                 # Reusable UI components
+│   ├── CheckoutModal.tsx   # Payment checkout modal
+│   └── ...
+├── pages/
+│   ├── payments/
+│   │   ├── PricingPage.tsx # Plan selection page
+│   │   └── Success.tsx     # Payment success page
+│   └── admin/billing/
+│       └── BillingDashboard.tsx # Admin billing management
+├── hooks/
+│   └── useBilling.ts       # Billing API hooks
+├── payment-gateway/        # Payment gateway abstraction
+│   ├── interfaces/
+│   ├── proxies/
+│   └── factory/
+├── controllers/            # API controllers
+├── cron/                   # Automated tasks
+└── ...
 ```
 
-## 🔄 Wizard Flow
+## 💳 Payment Integration
 
-### Step 1: Facebook Login
-- OAuth integration with Facebook
-- Secure token storage
-- User profile retrieval
+### Supported Gateways
 
-### Step 2: Business Account Selection
-- List existing Business Manager accounts
-- Create new Business Manager if needed
-- Business information collection (GST/PAN for Indian businesses)
+#### Stripe (Primary)
+- Credit card processing
+- Subscription management
+- Webhook handling
+- Invoice generation
 
-### Step 3: Business Verification
-- Document upload interface
-- Verification status tracking
-- Support for multiple document types (PDF, JPG, PNG)
+#### Razorpay (Fallback)
+- Indian payment methods
+- UPI, cards, net banking
+- Subscription support
+- Webhook integration
 
-### Step 4: WhatsApp Business Account
-- List existing WABAs
-- Create new WABA with custom naming
-- Account status monitoring
+### Configuration
 
-### Step 5: Phone Number Management
-- International phone number input
-- SMS/Voice verification code delivery
-- Real-time verification status updates
+Switch between payment gateways using the `PAYMENT_GW` environment variable:
 
-### Step 6: API Credentials & Webhook
-- Auto-generated API credentials
-- Webhook URL configuration
-- Copy-to-clipboard functionality
-- Webhook subscription setup
-
-### Finish Screen
-- Success confirmation with confetti animation
-- Quick actions (Create Template, Invite Team)
-- Next steps guidance
-- Direct link to main dashboard
-
-## 🔌 API Integration
-
-### Mock API Endpoints
-The application uses MSW to mock Meta Graph API endpoints:
-
-```typescript
-// Business Managers
-GET /mock/graph/me/businesses
-POST /mock/graph/business_managers
-
-// WhatsApp Business Accounts
-GET /mock/graph/{businessId}/whatsapp_business_accounts
-POST /mock/graph/{businessId}/whatsapp_business_accounts
-
-// Phone Numbers
-GET /mock/graph/{wabaId}/phone_numbers
-POST /mock/graph/{wabaId}/phone_numbers
-POST /mock/graph/{phoneId}/request_code
-POST /mock/graph/{phoneId}/verify_code
-
-// Webhooks
-POST /mock/graph/{wabaId}/subscribed_apps
-
-// Templates
-GET /mock/graph/{wabaId}/message_templates
-POST /mock/graph/{wabaId}/message_templates
+```env
+PAYMENT_GW="stripe"    # Use Stripe
+PAYMENT_GW="razorpay"  # Use Razorpay
 ```
 
-### Replacing Mock APIs with Real Endpoints
+## 📊 Subscription Plans
 
-To integrate with real Meta Graph API:
+### Starter Plan
+- **Price**: $29/month per seat
+- **Seats**: Up to 5 users
+- **Features**: Basic WhatsApp API, 1,000 messages/month
 
-1. **Update API Base URL**:
-   ```typescript
-   // In src/hooks/useMetaQuery.ts
-   const API_BASE = 'https://graph.facebook.com/v18.0';
-   ```
+### Growth Plan
+- **Price**: $99/month per seat
+- **Seats**: Up to 25 users
+- **Features**: Advanced analytics, 10,000 messages/month
 
-2. **Add Authentication Headers**:
-   ```typescript
-   const headers = {
-     'Authorization': `Bearer ${accessToken}`,
-     'Content-Type': 'application/json',
-   };
-   ```
+### Enterprise Plan
+- **Price**: $299/month per seat
+- **Seats**: Up to 100 users
+- **Features**: Unlimited messages, custom integrations
 
-3. **Remove MSW Worker**:
-   ```typescript
-   // Remove or comment out in src/App.tsx
-   // worker.start();
-   ```
+## 🔄 Auto-Billing Features
 
-4. **Update Environment Variables**:
-   ```env
-   VITE_META_API_BASE_URL=https://graph.facebook.com/v18.0
-   VITE_FACEBOOK_APP_ID=your_actual_app_id
-   ```
+### Subscription Renewal
+- Daily cron job checks for past-due subscriptions
+- Automatic payment retry with configurable attempts
+- Grace period handling before suspension
 
-## 🎨 Design Guidelines
+### Payment Failure Handling
+- Automatic downgrade or suspension
+- WhatsApp notification alerts
+- Admin dashboard for manual intervention
 
-### Color Palette
-- **Primary**: #003CFF (buttons, links, active states)
-- **Accent**: #FA0082 (highlights, badges, CTAs)
-- **Gray**: #D2D1D4 (cards, borders, disabled states)
-- **Text**: #1E1E1E (primary text color)
-
-### Typography Scale
-- **Headings**: Poppins font family
-  - H1, H2: 700 weight
-  - H3, H4: 600 weight
-  - H5, H6: 500 weight
-- **Body**: Inter font family, 400 weight
-- **Line Height**: 150% for body text, 120% for headings
-
-### Spacing System
-- Based on 8px grid system
-- Consistent spacing: 8px, 16px, 24px, 32px, 40px, 48px
-- Component padding: 24px default, 16px for compact components
-
-### Component Standards
-- **Border Radius**: 12px for cards and major components
-- **Shadows**: Medium shadow with subtle opacity
-- **Transitions**: 200ms ease-in-out for hover states
-- **Focus States**: 2px solid primary color outline
+### Invoice Management
+- Automatic PDF generation
+- Download links for customers
+- Payment status tracking
 
 ## 🧪 Testing
 
-### Manual Testing Checklist
-- [ ] Complete wizard flow from start to finish
-- [ ] Form validation on all input fields
-- [ ] Error handling for API failures
-- [ ] Session persistence across page reloads
-- [ ] Responsive design on mobile, tablet, desktop
-- [ ] Accessibility with keyboard navigation
-- [ ] Copy-to-clipboard functionality
-- [ ] File upload interface
-
-### Automated Testing (Future Enhancement)
+### Unit Tests
 ```bash
-# Unit tests with Jest + React Testing Library
-npm run test
+npm test
+```
 
-# E2E tests with Cypress
+### E2E Tests
+```bash
 npm run test:e2e
+```
 
-# Accessibility tests
-npm run test:a11y
+### Payment Gateway Tests
+```bash
+npm run test:payments
 ```
 
 ## 🚀 Deployment
 
-### Build Optimization
-```bash
-# Production build with optimizations
-npm run build
+### Prerequisites
+- PostgreSQL database
+- Redis for caching
+- Payment gateway accounts (Stripe/Razorpay)
 
-# Analyze bundle size
-npm run build -- --analyze
+### Environment Setup
+1. Set production environment variables
+2. Configure webhook endpoints
+3. Set up SSL certificates
+4. Configure database connections
+
+### Build & Deploy
+```bash
+npm run build
+npm start
 ```
 
-### Deployment Targets
-- **Netlify** (recommended for static hosting)
-- **Vercel** (with automatic deployments)
-- **AWS S3 + CloudFront** (for enterprise)
-- **Self-hosted** with nginx
+## 📝 API Endpoints
 
-### Performance Targets
-- **Lighthouse Score**: ≥90 for all metrics
-- **First Contentful Paint**: <1.5s
-- **Time to Interactive**: <3s
-- **Bundle Size**: <500KB gzipped
+### Plans
+- `GET /plans` - List available plans
 
-## 🔒 Security Considerations
+### Checkout
+- `POST /checkout/session` - Create payment session
 
-### Data Protection
-- Secure token storage in memory (not localStorage)
-- HTTPS-only cookie configuration
-- Input sanitization and validation
-- XSS protection with Content Security Policy
+### Subscriptions
+- `GET /subscriptions/:id` - Get subscription details
+- `PATCH /subscriptions/:id` - Update subscription
+- `POST /subscriptions/activate` - Activate subscription
 
-### API Security
-- OAuth 2.0 flow implementation
-- Token refresh mechanism
-- Rate limiting considerations
-- Webhook signature verification
+### Webhooks
+- `POST /webhooks/stripe` - Stripe webhook handler
+- `POST /webhooks/razorpay` - Razorpay webhook handler
+
+## 🔧 Development
+
+### Adding New Payment Gateways
+
+1. Implement `ICheckoutProxy` interface
+2. Add gateway to `PaymentGatewayFactory`
+3. Update environment configuration
+4. Add webhook handlers
+
+### Customizing Plans
+
+1. Update `prisma/seed.ts` with new plans
+2. Modify `PricingPage.tsx` for UI changes
+3. Update billing logic in controllers
 
 ## 🤝 Contributing
 
-### Development Workflow
 1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Make your changes with proper TypeScript types
-4. Add tests for new functionality
-5. Ensure all tests pass: `npm run test`
-6. Submit a pull request
-
-### Code Standards
-- **TypeScript**: Strict mode enabled
-- **ESLint**: Airbnb configuration
-- **Prettier**: Automatic code formatting
-- **Commit Messages**: Conventional commits format
+2. Create a feature branch
+3. Make your changes
+4. Add tests
+5. Submit a pull request
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License.
 
 ## 🆘 Support
 
 For support and questions:
-- **Email**: support@swiftams.com
-- **Documentation**: [docs.swiftams.com](https://docs.swiftams.com)
-- **Issues**: Create a GitHub issue with detailed reproduction steps
+- Create an issue on GitHub
+- Contact: support@swiftams.com
 
-## 🗺 Roadmap
+## 🔐 Security
 
-### Version 2.0
-- [ ] Multi-language support (i18n)
-- [ ] Dark mode theme
-- [ ] Advanced template editor
-- [ ] Bulk phone number import
-- [ ] Integration with CRM systems
-
-### Version 3.0
-- [ ] AI-powered setup recommendations
-- [ ] Advanced analytics dashboard
-- [ ] Multi-tenant support
-- [ ] API rate limiting dashboard
-- [ ] Advanced webhook management
+- All payment data is encrypted
+- Webhook signatures are verified
+- Environment variables for sensitive data
+- Regular security updates
 
 ---
 
-Built with ❤️ by the SwiftAMS Team
-
-**Ready to connect your WhatsApp Business API in minutes, not hours!**
+**Built with ❤️ by the SwiftAMS Team**
