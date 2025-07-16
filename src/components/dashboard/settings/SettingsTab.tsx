@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Settings as SettingsIcon, Palette, Shield, Bell, CreditCard, Users, Calendar, Plus, Edit, Download, Settings, Trash2, X, AlertCircle, Minus } from 'lucide-react';
+import { Settings as SettingsIcon, Palette, Shield, Bell, CreditCard, Users, Calendar, Plus, Edit, Download, Settings, Trash2, X, AlertCircle, Minus, Wallet } from 'lucide-react';
 import { Card } from '../../ui/Card';
 import { Button } from '../../ui/Button';
 import { Input } from '../../ui/Input';
 import { Modal } from '../../ui/Modal';
 import { Badge } from '../../ui/Badge';
 import { UserManagement } from './UserManagement';
+import { CreditManagement } from './CreditManagement';
 import { useTheme } from '../../layout/ThemeProvider';
 import { themes } from '../../../lib/themes';
 import toast from 'react-hot-toast';
 
-type SettingsSection = 'users' | 'theme' | 'security' | 'notifications' | 'payments';
+type SettingsSection = 'users' | 'theme' | 'security' | 'notifications' | 'payments' | 'credits';
 
 interface PaymentMethod {
   id: string;
@@ -131,6 +132,7 @@ export const SettingsTab: React.FC = () => {
     { id: 'security', icon: Shield, label: 'Security' },
     { id: 'notifications', icon: Bell, label: 'Notifications' },
     { id: 'payments', icon: CreditCard, label: 'Payments' },
+    { id: 'credits', icon: Wallet, label: 'Credits' },
   ];
 
   const renderContent = () => {
@@ -149,33 +151,30 @@ export const SettingsTab: React.FC = () => {
               </h3>
               
               <div className="grid md:grid-cols-3 gap-4">
-                {Object.values(themes).map((themeOption) => (
+                {Object.entries(themes).map(([key, themeData]) => (
                   <div
-                    key={themeOption.name}
-                    className={`p-4 border-2 rounded-xl cursor-pointer transition-all ${
-                      theme.name === themeOption.name
+                    key={key}
+                    onClick={() => setTheme(themeData)}
+                    className={`p-4 border rounded-xl cursor-pointer transition-all ${
+                      theme.name === themeData.name
                         ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5'
-                        : 'border-[var(--color-border)] hover:border-[var(--color-primary)]/50'
+                        : 'border-[var(--color-border)] hover:border-[var(--color-primary)]'
                     }`}
-                    onClick={() => setTheme(themeOption)}
                   >
-                    <div className="flex space-x-2 mb-3">
-                      <div 
-                        className="h-4 w-4 rounded-full" 
-                        style={{ backgroundColor: themeOption.colors.primary }}
+                    <div className="flex items-center space-x-3 mb-2">
+                      <div
+                        className="w-4 h-4 rounded-full"
+                        style={{ backgroundColor: themeData.colors.primary }}
                       />
-                      <div 
-                        className="h-4 w-4 rounded-full" 
-                        style={{ backgroundColor: themeOption.colors.accent }}
-                      />
-                      <div 
-                        className="h-4 w-4 rounded-full" 
-                        style={{ backgroundColor: themeOption.colors.gray }}
-                      />
+                      <h4 className="font-medium text-[var(--color-text)]">
+                        {themeData.name}
+                      </h4>
                     </div>
-                    <h4 className="font-medium text-[var(--color-text)]">
-                      {themeOption.name}
-                    </h4>
+                    <p className="text-sm text-gray-500">
+                      {themeData.name === 'Swift Classic' && 'Clean and professional design'}
+                      {themeData.name === 'Dark Mode' && 'Easy on the eyes in low light'}
+                      {themeData.name === 'High Contrast' && 'Maximum accessibility'}
+                    </p>
                   </div>
                 ))}
               </div>
@@ -192,20 +191,20 @@ export const SettingsTab: React.FC = () => {
               <h3 className="text-lg font-semibold text-[var(--color-text)] mb-4">
                 Two-Factor Authentication
               </h3>
-              <p className="text-gray-500 mb-4">
-                Add an extra layer of security to your account
+              <p className="text-gray-600 mb-4">
+                Add an extra layer of security to your account by enabling two-factor authentication.
               </p>
               <Button variant="outline">Enable 2FA</Button>
             </Card>
 
             <Card>
               <h3 className="text-lg font-semibold text-[var(--color-text)] mb-4">
-                API Keys
+                Password Settings
               </h3>
-              <p className="text-gray-500 mb-4">
-                Manage API keys for external integrations
-              </p>
-              <Button variant="outline">Generate New Key</Button>
+              <div className="space-y-4">
+                <Button variant="outline">Change Password</Button>
+                <Button variant="outline">Update Security Questions</Button>
+              </div>
             </Card>
           </div>
         );
@@ -220,34 +219,18 @@ export const SettingsTab: React.FC = () => {
                 Email Notifications
               </h3>
               <div className="space-y-3">
-                <label className="flex items-center space-x-2">
+                <div className="flex items-center justify-between">
+                  <span>New message notifications</span>
                   <input type="checkbox" defaultChecked className="rounded" />
-                  <span className="text-[var(--color-text)]">New message alerts</span>
-                </label>
-                <label className="flex items-center space-x-2">
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Weekly usage reports</span>
                   <input type="checkbox" defaultChecked className="rounded" />
-                  <span className="text-[var(--color-text)]">Broadcast reports</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" className="rounded" />
-                  <span className="text-[var(--color-text)]">Weekly analytics</span>
-                </label>
-              </div>
-            </Card>
-
-            <Card>
-              <h3 className="text-lg font-semibold text-[var(--color-text)] mb-4">
-                Push Notifications
-              </h3>
-              <div className="space-y-3">
-                <label className="flex items-center space-x-2">
+                </div>
+                <div className="flex items-center justify-between">
+                  <span>Billing notifications</span>
                   <input type="checkbox" defaultChecked className="rounded" />
-                  <span className="text-[var(--color-text)]">Urgent messages</span>
-                </label>
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" className="rounded" />
-                  <span className="text-[var(--color-text)]">Assignment notifications</span>
-                </label>
+                </div>
               </div>
             </Card>
           </div>
@@ -294,29 +277,27 @@ export const SettingsTab: React.FC = () => {
               <div className="flex items-center justify-between mb-4">
                 <h3 className="text-lg font-semibold text-[var(--color-text)]">Payment Methods</h3>
                 <Button 
-                  variant="outline" 
-                  size="sm"
                   onClick={() => setShowAddPaymentModal(true)}
+                  size="sm"
                 >
                   <Plus className="h-4 w-4 mr-2" />
                   Add Payment Method
                 </Button>
               </div>
+              
               <div className="space-y-3">
                 {paymentMethods.map((method) => (
-                  <div key={method.id} className="flex items-center justify-between p-4 border border-[var(--color-border)] rounded-lg">
+                  <div key={method.id} className="flex items-center justify-between p-3 border border-[var(--color-border)] rounded-lg">
                     <div className="flex items-center space-x-3">
-                      <div className={`h-10 w-10 rounded-lg flex items-center justify-center ${
-                        method.type === 'visa' ? 'bg-blue-100' : 'bg-gray-100'
-                      }`}>
-                        <CreditCard className={`h-5 w-5 ${
-                          method.type === 'visa' ? 'text-blue-600' : 'text-gray-600'
-                        }`} />
+                      <div className="h-8 w-8 rounded bg-gray-100 flex items-center justify-center">
+                        <CreditCard className="h-4 w-4" />
                       </div>
                       <div>
-                        <p className="font-medium text-[var(--color-text)]">•••• •••• •••• {method.last4}</p>
+                        <p className="font-medium text-[var(--color-text)]">
+                          {method.type.charAt(0).toUpperCase() + method.type.slice(1)} ending in {method.last4}
+                        </p>
                         <p className="text-sm text-gray-500">
-                          {method.type === 'visa' ? 'Visa' : 'Mastercard'} ending in {method.last4}
+                          Expires {method.expiryMonth}/{method.expiryYear}
                         </p>
                       </div>
                     </div>
@@ -457,70 +438,39 @@ export const SettingsTab: React.FC = () => {
 
             {/* Subscription Controls */}
             <Card>
-              <h3 className="text-lg font-semibold text-[var(--color-text)] mb-4">Subscription Controls</h3>
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium text-[var(--color-text)]">Auto-Renewal</h4>
-                      <p className="text-sm text-gray-500">Automatically renew your subscription</p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input 
-                        type="checkbox" 
-                        checked={autoRenew}
-                        onChange={handleToggleAutoRenew}
-                        className="sr-only peer" 
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <h4 className="font-medium text-[var(--color-text)]">Email Notifications</h4>
-                      <p className="text-sm text-gray-500">Receive billing notifications</p>
-                    </div>
-                    <label className="relative inline-flex items-center cursor-pointer">
-                      <input 
-                        type="checkbox" 
-                        checked={emailNotifications}
-                        onChange={handleToggleEmailNotifications}
-                        className="sr-only peer" 
-                      />
-                      <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                    </label>
-                  </div>
-                </div>
-                <div className="space-y-3">
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start"
-                    onClick={() => setShowChangePlanModal(true)}
-                  >
-                    <Shield className="h-4 w-4 mr-2" />
-                    Change Plan
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start"
-                    onClick={() => setShowUpdateSeatsModal(true)}
-                  >
-                    <Users className="h-4 w-4 mr-2" />
-                    Manage Seats
-                  </Button>
-                  <Button 
-                    variant="outline" 
-                    className="w-full justify-start text-red-600 hover:text-red-700"
-                    onClick={() => setShowCancelModal(true)}
-                  >
-                    <X className="h-4 w-4 mr-2" />
-                    Cancel Subscription
-                  </Button>
-                </div>
+              <h3 className="text-lg font-semibold text-[var(--color-text)] mb-4">Subscription Management</h3>
+              <div className="space-y-3">
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => setShowChangePlanModal(true)}
+                >
+                  <Shield className="h-4 w-4 mr-2" />
+                  Change Plan
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start"
+                  onClick={() => setShowUpdateSeatsModal(true)}
+                >
+                  <Users className="h-4 w-4 mr-2" />
+                  Manage Seats
+                </Button>
+                <Button 
+                  variant="outline" 
+                  className="w-full justify-start text-red-600 hover:text-red-700"
+                  onClick={() => setShowCancelModal(true)}
+                >
+                  <X className="h-4 w-4 mr-2" />
+                  Cancel Subscription
+                </Button>
               </div>
             </Card>
           </div>
         );
+      
+      case 'credits':
+        return <CreditManagement />;
       
       default:
         return null;

@@ -178,3 +178,55 @@ export interface ApiCredentials {
   webhookUrl: string;
   verifyToken: string;
 }
+
+export interface CreditBalance {
+  id: string;
+  userId: string;
+  balance: number;
+  currency: string;
+  lastUpdated: Date;
+  isLow: boolean;
+  lowBalanceThreshold: number;
+}
+
+export interface CreditPackage {
+  id: string;
+  name: string;
+  credits: number;
+  price: number;
+  currency: string;
+  description: string;
+  isPopular?: boolean;
+  discount?: number;
+}
+
+export interface CreditTransaction {
+  id: string;
+  userId: string;
+  type: 'purchase' | 'usage' | 'refund' | 'bonus';
+  amount: number;
+  credits: number;
+  description: string;
+  timestamp: Date;
+  status: 'pending' | 'completed' | 'failed';
+  paymentMethod?: string;
+  invoiceId?: string;
+}
+
+export interface CreditUsage {
+  id: string;
+  userId: string;
+  date: Date;
+  messagesSent: number;
+  creditsUsed: number;
+  costPerMessage: number;
+  totalCost: number;
+}
+
+export interface CreditUsageStats {
+  totalCreditsUsed: number;
+  totalMessagesSent: number;
+  averageCostPerMessage: number;
+  monthlyUsage: CreditUsage[];
+  dailyUsage: CreditUsage[];
+}

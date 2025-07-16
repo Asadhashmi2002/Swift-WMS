@@ -1,4 +1,16 @@
-import { User, Chat, Message, BroadcastTemplate, Broadcast, AnalyticsData } from '../types';
+import { 
+  User, 
+  Chat, 
+  Message, 
+  BroadcastTemplate, 
+  Broadcast,
+  AnalyticsData,
+  CreditBalance,
+  CreditPackage,
+  CreditTransaction,
+  CreditUsage,
+  CreditUsageStats
+} from '../types';
 
 // Mock data for authentication and users
 const mockUsers: User[] = [
@@ -307,4 +319,147 @@ export const mockApi = {
       broadcastHistory,
     };
   },
+};
+
+// Utility function for simulating API delays
+const simulateDelay = async (ms: number = 500) => {
+  return new Promise(resolve => setTimeout(resolve, ms));
+};
+
+// Credit System APIs
+export const getCreditBalance = async (): Promise<CreditBalance> => {
+  await simulateDelay();
+  return {
+    id: '1',
+    userId: '1',
+    balance: 231.07,
+    currency: 'INR',
+    lastUpdated: new Date(),
+    isLow: true,
+    lowBalanceThreshold: 500,
+  };
+};
+
+export const getCreditPackages = async (): Promise<CreditPackage[]> => {
+  await simulateDelay();
+  return [
+    {
+      id: '1',
+      name: 'Starter Pack',
+      credits: 1000,
+      price: 500,
+      currency: 'INR',
+      description: 'Perfect for small businesses',
+    },
+    {
+      id: '2',
+      name: 'Business Pack',
+      credits: 5000,
+      price: 2000,
+      currency: 'INR',
+      description: 'Most popular choice',
+      isPopular: true,
+      discount: 20,
+    },
+    {
+      id: '3',
+      name: 'Enterprise Pack',
+      credits: 15000,
+      price: 5000,
+      currency: 'INR',
+      description: 'For large scale operations',
+      discount: 30,
+    },
+  ];
+};
+
+export const purchaseCredits = async (packageId: string, paymentMethod: string): Promise<CreditTransaction> => {
+  await simulateDelay();
+  const packages = await getCreditPackages();
+  const selectedPackage = packages.find(p => p.id === packageId);
+  
+  if (!selectedPackage) {
+    throw new Error('Package not found');
+  }
+
+  return {
+    id: `txn_${Date.now()}`,
+    userId: '1',
+    type: 'purchase',
+    amount: selectedPackage.price,
+    credits: selectedPackage.credits,
+    description: `Purchased ${selectedPackage.name}`,
+    timestamp: new Date(),
+    status: 'completed',
+    paymentMethod,
+    invoiceId: `inv_${Date.now()}`,
+  };
+};
+
+export const getCreditTransactions = async (): Promise<CreditTransaction[]> => {
+  await simulateDelay();
+  return [
+    {
+      id: '1',
+      userId: '1',
+      type: 'purchase',
+      amount: 2000,
+      credits: 5000,
+      description: 'Purchased Business Pack',
+      timestamp: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+      status: 'completed',
+      paymentMethod: 'Stripe',
+      invoiceId: 'inv_001',
+    },
+    {
+      id: '2',
+      userId: '1',
+      type: 'usage',
+      amount: -50,
+      credits: -100,
+      description: 'Message credits used',
+      timestamp: new Date(Date.now() - 2 * 24 * 60 * 60 * 1000),
+      status: 'completed',
+    },
+    {
+      id: '3',
+      userId: '1',
+      type: 'usage',
+      amount: -25,
+      credits: -50,
+      description: 'Message credits used',
+      timestamp: new Date(Date.now() - 1 * 24 * 60 * 60 * 1000),
+      status: 'completed',
+    },
+  ];
+};
+
+export const getCreditUsage = async (period: 'daily' | 'monthly' = 'daily'): Promise<CreditUsageStats> => {
+  await simulateDelay();
+  
+  const generateUsageData = (days: number) => {
+    const data: CreditUsage[] = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const date = new Date();
+      date.setDate(date.getDate() - i);
+      data.push({
+        id: `usage_${i}`,
+        userId: '1',
+        date,
+        messagesSent: Math.floor(Math.random() * 50) + 10,
+        creditsUsed: Math.floor(Math.random() * 100) + 20,
+        costPerMessage: 0.5,
+        totalCost: Math.floor(Math.random() * 50) + 10,
+      });
+    }
+    return data;
+  };
+
+  return {
+    totalCreditsUsed: 1500,
+    totalMessagesSent: 750,
+    averageCostPerMessage: 0.5,
+    monthlyUsage: period === 'monthly' ? generateUsageData(30) : [],
+    dailyUsage: period === 'daily' ? generateUsageData(7) : [],
+  };
 };
